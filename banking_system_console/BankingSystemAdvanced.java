@@ -50,13 +50,29 @@ public class BankingSystemAdvanced {
     }
 
     private static void initStorage() throws IOException {
+        // Create required directories if they don't exist
         Files.createDirectories(Paths.get(DATA_DIR));
         Files.createDirectories(Paths.get(TRANSACTIONS_DIR));
         Files.createDirectories(Paths.get(RECEIPTS_DIR));
         Files.createDirectories(Paths.get(BACKUP_DIR));
-        // create files if missing
-        Files.createFile(Paths.get(ACCOUNTS_FILE)); // may throw if exists
+
+        // Safely create main data files only if missing
+        Path accountsPath = Paths.get(ACCOUNTS_FILE);
+        if (!Files.exists(accountsPath)) {
+            Files.createFile(accountsPath);
+        }
+
+        Path scheduledPath = Paths.get(SCHEDULED_FILE);
+        if (!Files.exists(scheduledPath)) {
+            Files.createFile(scheduledPath);
+        }
+
+        Path auditPath = Paths.get(AUDIT_LOG);
+        if (!Files.exists(auditPath)) {
+            Files.createFile(auditPath);
+        }
     }
+
 
     private static void mainMenu() {
         while (true) {
